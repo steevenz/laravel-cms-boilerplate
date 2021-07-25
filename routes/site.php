@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Site;
 use App\Providers\ThemeServiceProvider;
+use App\Http\Controllers\Site;
 
 /**
  * Site Routes
