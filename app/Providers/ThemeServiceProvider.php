@@ -1,14 +1,16 @@
 <?php
 
 
-namespace App\Http;
+namespace App\Providers;
 
 
-class Theme
+use Illuminate\Support\ServiceProvider;
+
+class ThemeServiceProvider extends ServiceProvider
 {
-    public static function getFile($filePath)
+    public static function serveAsset($filePath)
     {
-        $filePath = str_replace(['\\','/'], DIRECTORY_SEPARATOR, $filePath);
+        $filePath = str_replace(['\\','/'], DIRECTORY_SEPARATOR, resource_path($filePath));
 
         if(file_exists($filePath)) {
             $fileStat = stat($filePath);

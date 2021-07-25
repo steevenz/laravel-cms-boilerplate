@@ -12,24 +12,25 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-use App\Http;
+use App\Http\Controllers;
+use App\Providers\ThemeServiceProvider;
 
 /**
  * Site Routes
  */
-Route::any('/themes/{path}', function($path){
-    Http\Theme::getFile(resource_path('themes/site/' . $path));
+Route::get('/themes/{path}', function($path){
+    ThemeServiceProvider::serveAsset('themes/site/' . $path);
 })->where('path', '([A-z0-9\/_.]+)?');
-Route::get('/', [Http\Controllers\Site\Frontpage::class, 'index']);
+Route::get('/', [Controllers\Site\Frontpage::class, 'index']);
 
 /**
  * Admin Routes
  */
 Route::prefix('admin')->group(function(){
-    Route::any('/themes/{path}', function($path){
-        Http\Theme::getFile(resource_path('themes/admin/' . $path));
+    Route::get('/themes/{path}', function($path){
+        ThemeServiceProvider::serveAsset('themes/admin/' . $path);
     })->where('path', '([A-z0-9\/_.]+)?');
 
-    Route::get('posts', [Http\Controllers\Admin\Posts::class, 'index']);
-    Route::post('create', [Http\Controllers\Admin\Posts::class, 'create']);
+    Route::get('posts', [Controllers\Admin\Posts::class, 'index']);
+    Route::post('create', [Controllers\Admin\Posts::class, 'create']);
 });
