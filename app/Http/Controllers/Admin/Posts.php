@@ -25,15 +25,16 @@ class Posts extends Controller
         ]);
 
         if(empty($request->id)) {
-            $response = \App\Models\Posts::create($request->all());
-        } else {
-            $response = \App\Models\Posts::find($request->id)->update($request->all());
-        }
-        if($response) {
-            return back()->with('success', 'Success create a new post: ' . $request->offsetGet('title'));
-        }
+            \App\Models\Posts::create($request->all());
 
-        return back()->with('failed', 'Failed create a new post');
+            return redirect()->route('posts.index')
+                ->with('success', 'Success create a new post: ' . $request->offsetGet('title'));
+        } else {
+            \App\Models\Posts::find($request->id)->update($request->all());
+
+            return redirect()->route('posts.index')
+                ->with('success', 'Success update post: ' . $request->offsetGet('title'));
+        }
     }
 
     public function delete($id)
@@ -41,9 +42,11 @@ class Posts extends Controller
         $post = \App\Models\Posts::find($id);
 
         if($post->delete()) {
-            return back()->with('success', 'Success delete post: ' . $post->title);
+            return redirect()->route('posts.index')
+                ->with('success', 'Success delete post: ' . $post->title);
         }
 
-        return back()->with('failed', 'Failed delete post: ' . $post->title);
+        return redirect()->route('posts.index')
+            ->with('failed', 'Failed delete post: ' . $post->title);
     }
 }
